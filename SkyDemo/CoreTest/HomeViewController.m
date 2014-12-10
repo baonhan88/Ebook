@@ -160,6 +160,9 @@
     [ad createDirectories];
     [ad loadBis]; // Modify it later according to condition.
     [self makeXIB];
+    
+    // install epub file & reload UICollectionView
+    [self libraryPressed:nil];
 }
 
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DDBBA52A-0043-4FDA-A8E0-84355DC83B58</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SkyDemo</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5ABA410E9243949CFB94045A6AA24352C3E4220B</key>
+		<string>https://github.com/baonhan88/Ebook.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SkyDemo/SkyDemo.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5ABA410E9243949CFB94045A6AA24352C3E4220B</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/baonhan88/Ebook.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>5ABA410E9243949CFB94045A6AA24352C3E4220B</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5ABA410E9243949CFB94045A6AA24352C3E4220B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Ebook</string>
+		</dict>
+	</array>
+</dict>
+</plist>
