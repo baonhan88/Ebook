@@ -871,7 +871,7 @@
 				ORGANIZATIONNAME = "Skytree Corporation";
 				TargetAttributes = {
 					A2212857140F5A7200DD6B45 = {
-						DevelopmentTeam = 6C99TY569A;
+						DevelopmentTeam = 5J6WV53SKC;
 					};
 				};
 			};
@@ -1225,7 +1225,7 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

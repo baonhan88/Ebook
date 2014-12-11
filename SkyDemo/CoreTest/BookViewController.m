@@ -641,7 +641,7 @@ int lastNumberOfSearched = 0;
         [rv setContentProviderClass:[FileProvider self]];
         // EpubProvider will read the content of epub without unzipping.
 //        [rv setContentProviderClass:[EPubProvider self]];
-        [rv setLicenseKey:@"0000-0000-0000-0000"];
+        [rv setLicenseKey:@"36df-3914-6ed2-9bc6"];
         [self addChildViewController:rv];
         rv.view.frame = self.view.bounds;
         rv.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;

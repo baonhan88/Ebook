@@ -103,7 +103,7 @@
     book.bookCode = bookInformation.bookCode;
     book.fileName = bookInformation.fileName;
     book.isFixedLayout = YES;
-    [fv setLicenseKey:@"0000-0000-0000-0000"];
+    [fv setLicenseKey:@"36df-3914-6ed2-9bc6"];
     fv.book = book;
     fv.transitionType = setting.transitionType;
     fv.dataSource = self;
