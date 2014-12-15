@@ -456,27 +456,29 @@ int lastNumberOfSearched = 0;
 }
 
 -(int)getRealFontSize:(int)fontSizeIndex {
-    int rs = 0;
-    switch (fontSizeIndex) {
-        case 0:
-            rs = 15;
-            break;
-        case 1:
-            rs = 17;
-            break;
-        case 2:
-            rs = 20;
-            break;
-        case 3:
-            rs = 24;
-            break;
-        case 4:
-            rs = 27;
-            break;
-        default:
-            rs = 20;
-    }
-    return rs;
+//    int rs = 0;
+//    switch (fontSizeIndex) {
+//        case 0:
+//            rs = 15;
+//            break;
+//        case 1:
+//            rs = 17;
+//            break;
+//        case 2:
+//            rs = 20;
+//            break;
+//        case 3:
+//            rs = 24;
+//            break;
+//        case 4:
+//            rs = 27;
+//            break;
+//        default:
+//            rs = 20;
+//    }
+//    return rs;
+    
+    return 15 + (fontSizeIndex * 3);
 }
 
 // for iOS7 only
@@ -798,6 +800,7 @@ int lastNumberOfSearched = 0;
     [self makeSearchBox];
     [self makeListView];
     [self makePIBox];
+    [self makeBottomBar];
 }
 
 -(UIColor*)getMakerColor:(int)colorIndex {
@@ -1900,12 +1903,12 @@ int lastNumberOfSearched = 0;
 -(void)increseFontSize {
     NSString* fontName = setting.fontName;
     if ([fontName isEqualToString:@"Book Fonts"]) fontName = @"";
-    if (self.setting.fontSize!=4) {
+//    if (self.setting.fontSize!=4) {
         self.setting.fontSize++;
         [rv changeFontName:fontName fontSize:[self getRealFontSize:setting.fontSize]];
-    }
+//    }
     
-    NSLog(@"increseFontSize = %d". self.setting.fontSize);
+    NSLog(@"self.setting.fontSize = %d", self.setting.fontSize);
 }
 
 -(void)decreseFontSize {
@@ -1915,6 +1918,8 @@ int lastNumberOfSearched = 0;
         self.setting.fontSize--;
         [rv changeFontName:fontName fontSize:[self getRealFontSize:setting.fontSize]];
     }
+    
+    NSLog(@"self.setting.fontSize = %d", self.setting.fontSize);
 }
 
 -(void)homePressed:(id)sender {
@@ -1974,6 +1979,56 @@ BOOL bookHidden = NO;
 -(void)hidePIBox {
     piBox.hidden = YES;
     piArrow.hidden = YES;
+}
+
+#pragma mark - Events
+
+- (void)nextPageButtonClicked:(UIButton *)button {
+    NSLog(@"nextPageButtonClicked");
+    [rv gotoNextPageInChapter];
+}
+
+- (void)previousPageButtonClicked:(UIButton *)button {
+    NSLog(@"previousPageButtonClicked");
+    [rv gotoPrevPageInChapter];
+}
+
+- (void)settingButtonClicked:(UIButton *)button {
+    NSLog(@"settingButtonClicked");
+    SetupController *cvc = [[SetupController alloc]init];
+    [self presentModalViewController:cvc animated:YES];
+}
+
+#pragma mark - Make UI
+
+- (void)makeBottomBar {
+    CGSize size = [[UIScreen mainScreen] bounds].size;
+    
+    // add bottom bar view
+    UIView *bottomBarView = [[UIView alloc] initWithFrame:CGRectMake(0, size.height-44, size.width, 44)];
+    [bottomBarView setBackgroundColor:[UIColor lightGrayColor]];
+    [self.view addSubview:bottomBarView];
+    
+    // add next button
+    UIButton *nextPageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [nextPageButton setFrame:CGRectMake(size.width-40, 10, 20, 20)];
+    [nextPageButton setImage:[UIImage imageNamed:@"btn_next"] forState:UIControlStateNormal];
+    [nextPageButton addTarget:self action:@selector(nextPageButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomBarView addSubview:nextPageButton];
+    
+    // add previous button
+    UIButton *previousPageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [previousPageButton setFrame:CGRectMake(size.width-70, 10, 20, 20)];
+    [previousPageButton setImage:[UIImage imageNamed:@"btn_previous"] forState:UIControlStateNormal];
+    [previousPageButton addTarget:self action:@selector(previousPageButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomBarView addSubview:previousPageButton];
+    
+    // add setting button
+    UIButton *settingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [settingButton setFrame:CGRectMake(20, 8, 24, 24)];
+    [settingButton setImage:[UIImage imageNamed:@"setting"] forState:UIControlStateNormal];
+    [settingButton addTarget:self action:@selector(settingButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [bottomBarView addSubview:settingButton];
 }
 
 -(void)makePIBox {
@@ -2731,6 +2786,9 @@ BOOL bookHidden = NO;
     [super viewDidLoad];
     @autoreleasepool {
         ad =  (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        // install ebook & save to DB
+        [ad installEPub:@"UCC.epub"];
         
         // load book from database when start book VC
         [ad loadBis];
