@@ -85,6 +85,7 @@
     UILabel* authorLabel;
     UILabel* chapterLabel;
     UILabel* titleLabel;
+    UILabel* titleLabelFull;
     UILabel* pageIndexLabel;
     UILabel* secondaryIndexLabel;
     

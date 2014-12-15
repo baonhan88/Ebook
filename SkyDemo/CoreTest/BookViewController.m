@@ -758,9 +758,17 @@ int lastNumberOfSearched = 0;
     titleLabel = [[UILabel alloc] init];
     [titleLabel setBackgroundColor:[UIColor clearColor]];
     [titleLabel setTextColor:[self getTheme].controlColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    titleLabel.font = [UIFont boldSystemFontOfSize:12.0];
     titleLabel.textAlignment=ALIGN_CENTER;
     [rv.customView addSubview:titleLabel];
+    
+    // showing when list button clicked
+    titleLabelFull = [[UILabel alloc] init];
+    [titleLabelFull setBackgroundColor:[UIColor clearColor]];
+    [titleLabelFull setTextColor:[self getTheme].controlColor];
+    titleLabelFull.font = [UIFont boldSystemFontOfSize:12.0];
+    titleLabelFull.textAlignment=NSTextAlignmentLeft;
+    [rv.customView addSubview:titleLabelFull];
 
     pageIndexLabel = [[UILabel alloc] init];
     [pageIndexLabel setFont:[UIFont fontWithName:fn size:fs]];
@@ -1896,6 +1904,8 @@ int lastNumberOfSearched = 0;
         self.setting.fontSize++;
         [rv changeFontName:fontName fontSize:[self getRealFontSize:setting.fontSize]];
     }
+    
+    NSLog(@"increseFontSize = %d". self.setting.fontSize);
 }
 
 -(void)decreseFontSize {
@@ -2101,7 +2111,10 @@ BOOL bookHidden = NO;
             secondaryIndexLabel.hidden = YES;
             dotted.frame =      CGRectMake(lm,vh-bm,vw-lm-rm,12);
             slider.frame =      CGRectMake(lm,vh-bm-11,vw-lm-rm,35);
+            
             titleLabel.frame = CGRectMake(vw/2.9, tm,vw/4,30);
+            titleLabelFull.frame = CGRectMake(vw/2.9, tm,vw/2,30);
+
             pageIndexLabel.frame =      CGRectMake(vw/2.9,        vh-bm*.9,vw/4,30);
             
             fontBox.frame = CGRectMake(vw-fontBox.bounds.size.width-50,tm+30,fontBox.frame.size.width,fontBox.frame.size.height);
@@ -2123,13 +2136,19 @@ BOOL bookHidden = NO;
                 secondaryIndexLabel.hidden = NO;
                 authorLabel.hidden = NO;
                 authorLabel.frame = CGRectMake(vw/8, tm,vw/4,30);
+                
                 titleLabel.frame = CGRectMake(vw/2+vw/9, tm,vw/4,30);
+                titleLabelFull.frame = CGRectMake(vw/2+vw/9, tm,vw/2,30);
+
                 pageIndexLabel.frame =      CGRectMake(vw/8,        vh-bm*.9,vw/4,30);
                 secondaryIndexLabel.frame = CGRectMake(vw/2+vw/9,   vh-bm*.9,vw/4,30);
             }else {
                 secondaryIndexLabel.hidden = YES;
                 authorLabel.hidden = YES;
+                
                 titleLabel.frame = CGRectMake(vw/2.9, tm,vw/4,30);
+                titleLabelFull.frame = CGRectMake(vw/2.9, tm,vw/2,30);
+
                 pageIndexLabel.frame =      CGRectMake(vw/2.9,        vh-bm*.9,vw/4,30);
             }
             fontBox.frame = CGRectMake(vw-fontBox.bounds.size.width-60,tm+33,fontBox.frame.size.width,fontBox.frame.size.height);
@@ -2156,7 +2175,10 @@ BOOL bookHidden = NO;
             secondaryIndexLabel.hidden = YES;
             dotted.frame =   CGRectMake(lm,vh-bm-10,vw-lm-rm+10,12);
             slider.frame =   CGRectMake(lm,vh-bm-20,vw-lm-rm+10,35);
+            
             titleLabel.frame = CGRectMake(vw/2.9, tm+2,vw/4,bh);
+            titleLabelFull.frame = CGRectMake(vw/2.9, tm+2,vw/2,bh);
+
             pageIndexLabel.frame =      CGRectMake(vw/2.7,        vh-bm*.9,vw/4,30);
             
             prevButton.frame    = CGRectMake(lm+38*0    ,tm+bh-2,bw,bh);
@@ -2181,7 +2203,10 @@ BOOL bookHidden = NO;
             authorLabel.hidden = YES;
             secondaryIndexLabel.hidden = YES;
             authorLabel.frame = CGRectMake(vw/8, tm,vw/4,bh);
+            
             titleLabel.frame = CGRectMake(vw/2.9, tm+2,vw/4,bh);
+            titleLabelFull.frame = CGRectMake(vw/2.9, tm+2,vw/2,bh);
+
             pageIndexLabel.frame =      CGRectMake(vw/2.7,        vh-bm,vw/4,30);
             
             prevButton.frame    = CGRectMake(mx+40*0,tm,bw,bh);
@@ -2372,6 +2397,9 @@ BOOL bookHidden = NO;
     pageIndexLabel.hidden = YES;
     secondaryIndexLabel.hidden = YES;
     
+    titleLabel.hidden = YES;
+    titleLabelFull.hidden = NO;
+    
     int tm = 60;
     int bm = 60;
     listView.frame = CGRectMake(0, tm, self.view.bounds.size.width,self.view.bounds.size.height-(tm+bm));
@@ -2400,12 +2428,12 @@ BOOL bookHidden = NO;
 -(void)showContentsListView {
     int tm = segmentedControl.frame.origin.y+segmentedControl.frame.size.height + 10;
     int bm = 10;
-    int lm = 50;
-    int rm = 50;
-    if (![self isPad]) {
-        lm = 15;
-        rm = 15;
-    }
+    int lm = 0;
+    int rm = 0;
+//    if (![self isPad]) {
+//        lm = 5;
+//        rm = 5;
+//    }
     contentsListView.frame = CGRectMake(lm,tm,listView.frame.size.width-(lm+rm),listView.frame.size.height-(tm+bm));
     
     for (UIView* view in contentsListView.subviews) {
@@ -2424,7 +2452,7 @@ BOOL bookHidden = NO;
         nw = nw - nx;
         UIView* navPointView = [[UIView alloc]initWithFrame:CGRectMake(nx,ny,listView.frame.size.width,nh)];
         navPointView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        UILabel* textLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,10,navPointView.frame.size.width-20*2,20)];
+        UILabel* textLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,10,navPointView.frame.size.width-20*2,20)];
         textLabel.text = np.text;
         textLabel.backgroundColor = [UIColor clearColor];
         UIView* lineView = [[UIView alloc]initWithFrame:CGRectMake(0,nh-1,nw,2)];
@@ -2493,6 +2521,9 @@ BOOL bookHidden = NO;
     dotted.hidden = NO;    
     pageIndexLabel.hidden = NO;
 //    secondaryIndexLabel.hidden = NO;
+    titleLabel.hidden = NO;
+    titleLabelFull.hidden = YES;
+    
     [rv showPages];
     [self showNoteIcons];
 }
@@ -2700,6 +2731,11 @@ BOOL bookHidden = NO;
     [super viewDidLoad];
     @autoreleasepool {
         ad =  (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        // load book from database when start book VC
+        [ad loadBis];
+        self.bookInformation = [ad.bis objectAtIndex:0];
+
         currentColor = [self getMakerColor:0];
         self.setting = [ad fetchSetting];
         pagings = [[NSMutableArray alloc]init];
@@ -2718,6 +2754,7 @@ BOOL bookHidden = NO;
         autoMoveChapterWhenParallesFinished  = YES;
         isLoop = NO;
         [self becomeFirstResponder];
+        
     }
 }
 
@@ -2927,6 +2964,8 @@ BOOL bookHidden = NO;
     }
     authorLabel.text = rvc.book.creator;
     titleLabel.text = rvc.book.title;
+    titleLabelFull.text = rvc.book.title;
+    NSLog(@"rvc.book.title = %@", rvc.book.title);
 
     [self changePageLabels:pageInformation];
     [self performSelector:@selector(processNoteIcons) withObject:nil afterDelay:0.0];

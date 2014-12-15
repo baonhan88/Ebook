@@ -209,12 +209,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    [self openDatabase];    
-    viewController = [[HomeViewController alloc]init];
+    [self openDatabase];
+    
+//    viewController = [[HomeViewController alloc]init];
+    bookVC = [[BookViewController alloc]init];
+    
     highlights = [[NSMutableArray alloc]init];
-    [self.window addSubview:viewController.view];
+    
+//    [self.window addSubview:bookVC.view];
     [self.window makeKeyAndVisible];
-    self.window.rootViewController = viewController;
+    self.window.rootViewController = bookVC;
+    
 	return YES;    
 }
 

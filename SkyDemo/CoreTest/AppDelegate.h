@@ -44,13 +44,18 @@
 
 
 @class HomeViewController;
+@class BookViewController;
+
 @class Highlight;
 @class Setting;
 @class PagingInformation;
 @interface AppDelegate : UIResponder <UIApplicationDelegate> {
     UIWindow *window;
 	BOOL isRotationLocked;
+    
     HomeViewController *viewController;
+    BookViewController *bookVC;
+    
     NSMutableArray *highlights;
     Setting *setting;
     sqlite3 *database;

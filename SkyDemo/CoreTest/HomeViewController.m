@@ -133,16 +133,6 @@
 
 @implementation HomeViewController
 
-- (void)collectionView:(UICollectionView *)colView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell* cell = [colView cellForItemAtIndexPath:indexPath];
-    cell.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-}
-
-- (void)collectionView:(UICollectionView *)colView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell* cell = [colView cellForItemAtIndexPath:indexPath];
-    cell.contentView.backgroundColor = nil;
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -454,55 +444,6 @@
     [self reload];
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return [ad.bis count];
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return CGSizeMake([self cellWidth],[self cellHeight]);
-}
-
-- (BookCell *)collectionView:(UICollectionView *)aCollectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    int row = indexPath.row;
-
-
-    BookCell *cell=[aCollectionView dequeueReusableCellWithReuseIdentifier:ci forIndexPath:indexPath];
-    
-    BookInformation* bi = [ad.bis objectAtIndex:row];
-    
-    if (cell.isInit && cell.bookCode == bi.bookCode) {
-//        NSLog(@"cell row %d bookCode %d isInit %d just   returned",row,cell.bookCode,cell.isInit);
-        return cell;
-    }else {
-//        NSLog(@"cell row %d bookCode %d isInit %d will be created",row,cell.bookCode,cell.isInit);
-    }
-    
-    
-    for (UIView* view in cell.contentView.subviews) {
-        [view removeFromSuperview];
-    }
-
-    
-    if (isGridMode) {
-        UIView*masterView= [self makeMasterView:bi];
-        int mx = [self cellWidth]/2.0-masterView.bounds.size.width/2.0;
-        masterView.frame = CGRectMake(mx,0,masterView.bounds.size.width,masterView.bounds.size.height);
-        [self addShadow:masterView rect:CGRectMake(0,0,122,162) size:CGSizeMake(15.0f, 20.0f)];
-        [cell.contentView addSubview:masterView];
-    }else {
-        UIView*masterDetailView= [self makeMasterDetailView:bi];
-        masterDetailView.frame = CGRectMake(0,0,masterDetailView.bounds.size.width,masterDetailView.bounds.size.height);
-        [cell.contentView addSubview:masterDetailView];
-    }
-    cell.tag = row;
-    cell.bookCode = bi.bookCode;
-    cell.isInit = YES;
-    return cell;
-}
-
 -(void)addShadow:(UIView*)view rect:(CGRect)rect size:(CGSize)size{
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:rect];
     view.layer.masksToBounds = NO;
@@ -669,6 +610,57 @@
     [collectionView reloadData];
 }
 
+#pragma mark - UICollectionView Delegate & Datasource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [ad.bis count];
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake([self cellWidth],[self cellHeight]);
+}
+
+- (BookCell *)collectionView:(UICollectionView *)aCollectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    int row = indexPath.row;
+    
+    
+    BookCell *cell=[aCollectionView dequeueReusableCellWithReuseIdentifier:ci forIndexPath:indexPath];
+    
+    BookInformation* bi = [ad.bis objectAtIndex:row];
+    
+    if (cell.isInit && cell.bookCode == bi.bookCode) {
+        //        NSLog(@"cell row %d bookCode %d isInit %d just   returned",row,cell.bookCode,cell.isInit);
+        return cell;
+    }else {
+        //        NSLog(@"cell row %d bookCode %d isInit %d will be created",row,cell.bookCode,cell.isInit);
+    }
+    
+    
+    for (UIView* view in cell.contentView.subviews) {
+        [view removeFromSuperview];
+    }
+    
+    
+    if (isGridMode) {
+        UIView*masterView= [self makeMasterView:bi];
+        int mx = [self cellWidth]/2.0-masterView.bounds.size.width/2.0;
+        masterView.frame = CGRectMake(mx,0,masterView.bounds.size.width,masterView.bounds.size.height);
+        [self addShadow:masterView rect:CGRectMake(0,0,122,162) size:CGSizeMake(15.0f, 20.0f)];
+        [cell.contentView addSubview:masterView];
+    }else {
+        UIView*masterDetailView= [self makeMasterDetailView:bi];
+        masterDetailView.frame = CGRectMake(0,0,masterDetailView.bounds.size.width,masterDetailView.bounds.size.height);
+        [cell.contentView addSubview:masterDetailView];
+    }
+    cell.tag = row;
+    cell.bookCode = bi.bookCode;
+    cell.isInit = YES;
+    return cell;
+}
+
 - (void)collectionView:(UICollectionView *)aCollectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     BookCell *cell = (BookCell *)[collectionView cellForItemAtIndexPath:indexPath];
@@ -676,6 +668,16 @@
     int index = cell.tag;
     BookInformation* bi = [ad.bis objectAtIndex:index];
     [self openBook:bi];
+}
+
+- (void)collectionView:(UICollectionView *)colView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell* cell = [colView cellForItemAtIndexPath:indexPath];
+    cell.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
+}
+
+- (void)collectionView:(UICollectionView *)colView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell* cell = [colView cellForItemAtIndexPath:indexPath];
+    cell.contentView.backgroundColor = nil;
 }
 
 -(void)openBook:(BookInformation*)bi {
